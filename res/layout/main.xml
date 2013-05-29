@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="320dp"
+            android:id="@+id/scrollView">
+        <TextView
+                android:id="@+id/outputText"
+                android:layout_width="fill_parent"
+                android:layout_height="320dp"
+                android:text="Hello World, ExplorerActivity"
+                />
+    </ScrollView>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/start"
+                android:id="@+id/startStopButton" android:layout_weight="0.5"/>
+        <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/marker"
+                android:id="@+id/markerButton" android:layout_weight="0.5"/>
+    </LinearLayout>
+</LinearLayout>
+
