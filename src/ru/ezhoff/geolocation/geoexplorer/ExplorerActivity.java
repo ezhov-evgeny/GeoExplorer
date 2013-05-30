@@ -27,6 +27,7 @@ public class ExplorerActivity extends Activity {
         markerButton    = (Button) findViewById(R.id.markerButton);
         outputView      = (TextView) findViewById(R.id.outputText);
         FileLogger.setOutputView(outputView);
+        logger = FileLogger.getInstance();
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,7 +40,7 @@ public class ExplorerActivity extends Activity {
                 logger.warn("MARKER");
             }
         });
-        FileLogger.getInstance().info("Loaded.");
+        logger.info("Loaded.");
     }
 
     private void changeMonitoringState() {
@@ -54,11 +55,13 @@ public class ExplorerActivity extends Activity {
 
     private void activateMonitoring() {
         logger = FileLogger.getInstance();
+        logger.info("Monitoring is activated.");
         //Activate modules here
     }
 
     private void deactivateMonitoring() {
         //Deactivate modules here
+        logger.info("Monitoring is deactivated.");
         logger.close();
     }
 }

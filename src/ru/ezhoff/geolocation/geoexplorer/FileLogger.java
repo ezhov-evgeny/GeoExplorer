@@ -23,16 +23,11 @@ public class FileLogger
     private static FileLogger instance;
     private static TextView outputView;
 
-    //private static String logFilePath = Environment.getExternalStorageDirectory().toString() + "/explorer.log";
-    private static String logFilePath = "/explorer.log";
+    private static String logFilePath = Environment.getExternalStorageDirectory().toString() + "/explorer.log";
 
     private File logFile;
 
     private BufferedWriter writer;
-
-    public static void setLogFilePath(String logFilePath) {
-        FileLogger.logFilePath = logFilePath;
-    }
 
     public static void setOutputView(TextView outputView) {
         FileLogger.outputView = outputView;
@@ -44,15 +39,18 @@ public class FileLogger
         }
         if (instance == null) {
             try {
-                instance = new FileLogger(logFilePath);
+                instance = new FileLogger();
+                instance.init(logFilePath);
             } catch (IOException e) {
-                e.printStackTrace();
+                instance.error(e.getMessage());
             }
         }
         return instance;
     }
 
-    private FileLogger(String logFilePath) throws IOException {
+    private FileLogger() {}
+
+    private void init(String logFilePath) throws IOException {
         logFile = new File(logFilePath);
         if (!logFile.exists()) {
             logFile.createNewFile();
