@@ -33,7 +33,7 @@ public class ExplorerActivity extends Activity {
         startStopButton = (Button) findViewById(R.id.startStopButton);
         markerButton    = (Button) findViewById(R.id.markerButton);
         outputView      = (TextView) findViewById(R.id.outputText);
-        FileLogger.setOutputView(outputView);
+        //FileLogger.setOutputView(outputView);
         logger = FileLogger.getInstance();
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +47,7 @@ public class ExplorerActivity extends Activity {
                 logger.warn("MARKER");
             }
         });
+        initMonitors();
         logger.info("Loaded.");
     }
 

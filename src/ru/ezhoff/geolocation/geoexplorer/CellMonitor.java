@@ -4,8 +4,6 @@ import android.telephony.*;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 
-import java.util.List;
-
 /**
  * @author e.ezhov
  * @version 1.0 05.06.13
@@ -63,10 +61,9 @@ public class CellMonitor extends PhoneStateListener implements Monitor, Runnable
         if (location instanceof GsmCellLocation) {
             GsmCellLocation loc = (GsmCellLocation) location;
             logger.info(formatModuleMessage(String.format(
-                    "Listener::Cell location changed{GSM} - CID: %s, LAC: %s, PSC: %s",
+                    "Listener::Cell location changed{GSM} - CID: %s, LAC: %s",
                     loc.getCid(),
-                    loc.getLac(),
-                    loc.getPsc()
+                    loc.getLac()
             )));
         } else if (location instanceof CdmaCellLocation) {
             CdmaCellLocation loc = (CdmaCellLocation) location;
