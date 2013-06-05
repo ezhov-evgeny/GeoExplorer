@@ -74,7 +74,7 @@ public class FileLogger
         append(WARN, message);
     }
 
-    private void append(String level, String message) {
+    private synchronized void append(String level, String message) {
         if (outputView != null) {
             outputView.append(message + "\n");
         }

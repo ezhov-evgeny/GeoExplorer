@@ -56,6 +56,10 @@ public class LocationMonitor implements Monitor, LocationListener, Runnable {
      * The thread for checking by period.
      */
     private Thread thread;
+
+    /**
+     * The current location
+     */
     private Location location;
 
 
@@ -104,7 +108,7 @@ public class LocationMonitor implements Monitor, LocationListener, Runnable {
                 thread = new Thread(this);
             }
             thread.start();
-            logger.info(formatModuleMessage(String.format("Location checker for provider '%s' is started.", provider)));
+            logger.info(formatModuleMessage(String.format("Location monitor for provider '%s' is started.", provider)));
         }
     }
 
@@ -112,7 +116,7 @@ public class LocationMonitor implements Monitor, LocationListener, Runnable {
     public void stop() {
         isStarted = false;
         logger.info(formatModuleMessage(String.format(
-                "Signal to stopping for location checker of provider '%s' is sent.",
+                "Signal to stopping for location monitor of provider '%s' is sent.",
                 provider
         )));
         locationManager.removeUpdates(this);
@@ -129,7 +133,7 @@ public class LocationMonitor implements Monitor, LocationListener, Runnable {
             if (lastKnownLocation != null && !lastKnownLocation.equals(location)) {
                 location = lastKnownLocation;
                 logger.info(formatModuleMessage(String.format(
-                        "Checker::Location changed - Latitude: %s, Longitude: %s, Altitude: %s, Accuracy: %s",
+                        "Monitor::Location changed - Latitude: %s, Longitude: %s, Altitude: %s, Accuracy: %s",
                         location.getLatitude(),
                         location.getLongitude(),
                         location.getAltitude(),
@@ -142,7 +146,7 @@ public class LocationMonitor implements Monitor, LocationListener, Runnable {
                 logger.error(formatModuleMessage(e.getMessage()));
             }
         }
-        logger.info(formatModuleMessage(String.format("Location checker for provider '%s' is stopped.", provider)));
+        logger.info(formatModuleMessage(String.format("Location monitor for provider '%s' is stopped.", provider)));
     }
 
     /**
