@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -19,6 +20,8 @@ public class FileLogger
     private static final String ERROR   = "ERROR";
     private static final String DEBUG   = "DEBUG";
     private static final String WARN    = "WARN";
+
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd hh.MM.ss.SSS");
 
     private static FileLogger instance;
     private static TextView outputView;
@@ -79,7 +82,7 @@ public class FileLogger
             outputView.append(message + "\n");
         }
         try {
-            writer.append(Calendar.getInstance().toString()).append("\t")
+            writer.append(dateFormat.format(Calendar.getInstance().getTime())).append("\t")
                   .append(level).append("\t")
                   .append(message).append("\n");
         } catch (IOException e) {
