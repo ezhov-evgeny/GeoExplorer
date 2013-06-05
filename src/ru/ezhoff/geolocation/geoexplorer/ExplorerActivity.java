@@ -3,6 +3,7 @@ package ru.ezhoff.geolocation.geoexplorer;
 import android.app.Activity;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class ExplorerActivity extends Activity {
 
+    public static final int PERIOD = 500;
     private Button startStopButton;
     private Button markerButton;
     private TextView outputView;
@@ -77,8 +79,12 @@ public class ExplorerActivity extends Activity {
     private void initMonitors() {
         monitors = new LinkedList<Monitor>();
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         for (String provider: locationManager.getProviders(true)) {
-            monitors.add(new LocationMonitor().setLocationManager(locationManager).setProvider(provider).setPeriod(500));
+            monitors.add(
+                    new LocationMonitor().setLocationManager(locationManager).setProvider(provider).setPeriod(PERIOD)
+            );
         }
+        monitors.add(new CellMonitor().setTelephonyManager(telephonyManager).setPeriod(PERIOD));
     }
 }
