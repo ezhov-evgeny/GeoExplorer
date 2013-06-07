@@ -21,7 +21,7 @@ public class FileLogger
     private static final String DEBUG   = "DEBUG";
     private static final String WARN    = "WARN";
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.mm.dd hh.MM.ss.SSS");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd hh.mm.ss.SSS");
 
     private static FileLogger instance;
     private static TextView outputView;
