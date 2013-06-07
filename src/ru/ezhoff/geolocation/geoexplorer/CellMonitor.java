@@ -180,6 +180,10 @@ public class CellMonitor extends PhoneStateListener implements Monitor, Runnable
             if (Thread.interrupted()) {
                 return;
             }
+            logger.info(formatModuleMessage(String.format(
+                    "Monitor::Neighboring cell count: %s",
+                    telephonyManager.getNeighboringCellInfo().size()
+            )));
             for (NeighboringCellInfo neighboringCellInfo: telephonyManager.getNeighboringCellInfo()) {
                 logger.info(formatModuleMessage(String.format(
                         "Monitor::Neighboring cell info: CID: %s, LAC: %s, Network type: %s, PSC: %s, RSSI: %s, " +
