@@ -58,25 +58,7 @@ public class CellMonitor extends PhoneStateListener implements Monitor, Runnable
     @Override
     public void onCellLocationChanged(CellLocation location) {
         super.onCellLocationChanged(location);
-        if (location instanceof GsmCellLocation) {
-            GsmCellLocation loc = (GsmCellLocation) location;
-            logger.info(formatModuleMessage(String.format(
-                    "Listener::Cell location changed{GSM} - CID: %s, LAC: %s",
-                    loc.getCid(),
-                    loc.getLac()
-            )));
-        } else if (location instanceof CdmaCellLocation) {
-            CdmaCellLocation loc = (CdmaCellLocation) location;
-            logger.info(formatModuleMessage(String.format(
-                    "Listener::Cell location changed{CDMA} - Station ID: %s, Latitude: %s, Longitude: %s, " +
-                            "Network ID: %s, System ID: %s",
-                    loc.getBaseStationId(),
-                    loc.getBaseStationLatitude(),
-                    loc.getBaseStationLongitude(),
-                    loc.getNetworkId(),
-                    loc.getSystemId()
-            )));
-        }
+        logCellLocation("Listener::Cell location changed", location);
     }
 
     @Override
@@ -149,12 +131,18 @@ public class CellMonitor extends PhoneStateListener implements Monitor, Runnable
         if (telephonyManager == null) {
             throw new IllegalMonitorStateException("Monitor is not initialized");
         }
-        telephonyManager.listen(this, PhoneStateListener.LISTEN_CALL_STATE);
-        telephonyManager.listen(this, PhoneStateListener.LISTEN_CELL_LOCATION);
-        telephonyManager.listen(this, PhoneStateListener.LISTEN_DATA_ACTIVITY);
-        telephonyManager.listen(this, PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
-        telephonyManager.listen(this, PhoneStateListener.LISTEN_SERVICE_STATE);
-        telephonyManager.listen(this, PhoneStateListener.LISTEN_SIGNAL_STRENGTH);
+        telephonyManager.listen(
+                this,
+                PhoneStateListener.LISTEN_SERVICE_STATE
+                        | PhoneStateListener.LISTEN_SIGNAL_STRENGTH
+                        | PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR
+                        | PhoneStateListener.LISTEN_CALL_FORWARDING_INDICATOR
+                        | PhoneStateListener.LISTEN_CELL_LOCATION
+                        | PhoneStateListener.LISTEN_CALL_STATE
+                        | PhoneStateListener.LISTEN_DATA_CONNECTION_STATE
+                        | PhoneStateListener.LISTEN_DATA_ACTIVITY
+                        | PhoneStateListener.LISTEN_SIGNAL_STRENGTHS
+        );
         logger.info(formatModuleMessage("Cell listener is added."));
         if (period > 0) {
             isStarted = true;
@@ -196,6 +184,7 @@ public class CellMonitor extends PhoneStateListener implements Monitor, Runnable
                         neighboringCellInfo.describeContents()
                 )));
             }
+            logCellLocation("Monitor::Cell location check", telephonyManager.getCellLocation());
             try {
                 Thread.sleep(period);
             } catch (InterruptedException e) {
@@ -223,6 +212,30 @@ public class CellMonitor extends PhoneStateListener implements Monitor, Runnable
     public CellMonitor setPeriod(int period) {
         this.period = period;
         return this;
+    }
+
+    private void logCellLocation(String prefix, CellLocation location) {
+        if (location instanceof GsmCellLocation) {
+            GsmCellLocation loc = (GsmCellLocation) location;
+            logger.info(formatModuleMessage(String.format(
+                    "%s{GSM} - CID: %s, LAC: %s",
+                    prefix,
+                    loc.getCid(),
+                    loc.getLac()
+            )));
+        } else if (location instanceof CdmaCellLocation) {
+            CdmaCellLocation loc = (CdmaCellLocation) location;
+            logger.info(formatModuleMessage(String.format(
+                    "%s{CDMA} - Station ID: %s, Latitude: %s, Longitude: %s, " +
+                            "Network ID: %s, System ID: %s",
+                    prefix,
+                    loc.getBaseStationId(),
+                    loc.getBaseStationLatitude(),
+                    loc.getBaseStationLongitude(),
+                    loc.getNetworkId(),
+                    loc.getSystemId()
+            )));
+        }
     }
 
     private String formatModuleMessage(String message) {
